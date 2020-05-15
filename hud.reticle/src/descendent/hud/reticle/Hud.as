@@ -1,3 +1,4 @@
+import descendent.hud.reticle.TestDisplayTruc;
 import flash.geom.Point;
 
 import com.Utils.GlobalSignal;
@@ -19,6 +20,7 @@ import descendent.hud.reticle.Shape;
 import descendent.hud.reticle.SpecialGauge;
 import descendent.hud.reticle.UsingGauge;
 import descendent.hud.reticle.VitalGauge;
+import descendent.hud.reticle.AegisGauge;
 
 class descendent.hud.reticle.Hud extends Shape
 {
@@ -46,11 +48,23 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _our_using:UsingGauge;
 
+	private var _our_aegis_red:AegisGauge;
+
+	private var _our_aegis_blue:AegisGauge;
+
+	private var _our_aegis_pink:AegisGauge;
+
 	private var _dodge:DodgeGauge;
 
 	private var _their_vital:VitalGauge;
 
 	private var _their_using:UsingGauge;
+
+	private var _their_aegis_red:AegisGauge;
+
+	private var _their_aegis_blue:AegisGauge;
+
+	private var _their_aegis_pink:AegisGauge;
 
 	private var _nametag:Nametag;
 
@@ -77,6 +91,10 @@ class descendent.hud.reticle.Hud extends Shape
 	private var _reticle_stick:ID32;
 
 	private var _subject:Character;
+	
+	private var _test_display:TestDisplayTruc;
+	
+	private var _test_display2:TestDisplayTruc;
 
 	public function Hud()
 	{
@@ -99,14 +117,15 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._character = Character.GetClientCharacter();
 
-		this.prepare_power();
-		this.prepare_special();
+		//this.prepare_power();
+		//this.prepare_special();
 		this.prepare_our();
 		this.prepare_dodge();
 		this.prepare_their();
 		this.prepare_nametag();
 		this.prepare_callout();
 		this.prepare_rangefinder();
+		//this.prepare_test_display(); 
 
 		CharacterBase.SignalClientCharacterAlive.Connect(this.character_onEnter, this);
 
@@ -124,6 +143,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._our_vital.setSubject(this._character);
 		this._our_using.setSubject(this._character);
+
+		this._our_aegis_red.setSubject(this._character);
+		this._our_aegis_blue.setSubject(this._character);
+		this._our_aegis_pink.setSubject(this._character);
 	}
 
 	private function prepare_power():Void
@@ -134,7 +157,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function prepare_power_1():Void
 	{
-		this._power_1 = new PowerGauge(96.0, Deg.getRad(142.5), Deg.getRad(217.5), 6.0,
+		this._power_1 = new PowerGauge(94.0, Deg.getRad(142.5), Deg.getRad(217.5), 8.0,
 			_global.Enums.ItemEquipLocation.e_Wear_First_WeaponSlot);
 		this._power_1.onRouse.Connect(this.gauge_onRouse, this);
 		this._power_1.onSleep.Connect(this.gauge_onSleep, this);
@@ -143,7 +166,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function prepare_power_2():Void
 	{
-		this._power_2 = new PowerGauge(96.0, Deg.getRad(37.5), Deg.getRad(-37.5), 6.0,
+		this._power_2 = new PowerGauge(94.0, Deg.getRad(37.5), Deg.getRad(-37.5), 8.0,
 			_global.Enums.ItemEquipLocation.e_Wear_Second_WeaponSlot);
 		this._power_2.onRouse.Connect(this.gauge_onRouse, this);
 		this._power_2.onSleep.Connect(this.gauge_onSleep, this);
@@ -178,11 +201,12 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.prepare_our_vital();
 		this.prepare_our_using();
+		this.prepare_our_aegis();
 	}
 
 	private function prepare_our_vital():Void
 	{
-		this._our_vital = new VitalGauge(106.0, Deg.getRad(52.5), Deg.getRad(127.5), 12.0);
+		this._our_vital = new VitalGauge(106.0, Deg.getRad(142.5), Deg.getRad(217.5), 12.0);
 		this._our_vital.onRouse.Connect(this.gauge_onRouse, this);
 		this._our_vital.onSleep.Connect(this.gauge_onSleep, this);
 		this._our_vital.prepare(this.content);
@@ -193,10 +217,28 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using = new UsingGauge(96.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
 		this._our_using.prepare(this.content);
 	}
+	
+	private function prepare_our_aegis():Void
+	{
+		this._our_aegis_red = new AegisGauge(118.0, Deg.getRad(142.5), Deg.getRad(217.5), 4.0, 3);
+		this._our_aegis_red.onRouse.Connect(this.gauge_onRouse, this);
+		this._our_aegis_red.onSleep.Connect(this.gauge_onSleep, this);
+		this._our_aegis_red.prepare(this.content);
+		
+		this._our_aegis_blue = new AegisGauge(118.0, Deg.getRad(142.5), Deg.getRad(217.5), 4.0, 2);
+		this._our_aegis_blue.onRouse.Connect(this.gauge_onRouse, this);
+		this._our_aegis_blue.onSleep.Connect(this.gauge_onSleep, this);
+		this._our_aegis_blue.prepare(this.content);
+
+		this._our_aegis_pink = new AegisGauge(118.0, Deg.getRad(142.5), Deg.getRad(217.5), 4.0, 1);
+		this._our_aegis_pink.onRouse.Connect(this.gauge_onRouse, this);
+		this._our_aegis_pink.onSleep.Connect(this.gauge_onSleep, this);
+		this._our_aegis_pink.prepare(this.content);
+	}
 
 	private function prepare_dodge():Void
 	{
-		this._dodge = new DodgeGauge(122.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
+		this._dodge = new DodgeGauge(106.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
 		this._dodge.onRouse.Connect(this.gauge_onRouse, this);
 		this._dodge.onSleep.Connect(this.gauge_onSleep, this);
 		this._dodge.prepare(this.content);
@@ -206,11 +248,12 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.prepare_their_vital();
 		this.prepare_their_using();
+		this.prepare_their_aegis();
 	}
 
 	private function prepare_their_vital():Void
 	{
-		this._their_vital = new VitalGauge(106.0, Deg.getRad(232.5), Deg.getRad(307.5), 12.0);
+		this._their_vital = new VitalGauge(106.0, Deg.getRad(37.5), Deg.getRad(-37.5), 12.0);
 		this._their_vital.onRouse.Connect(this.their_vital_onRouse, this);
 		this._their_vital.onSleep.Connect(this.their_vital_onSleep, this);
 		this._their_vital.prepare(this.content);
@@ -220,6 +263,24 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._their_using = new UsingGauge(96.0, Deg.getRad(232.5), Deg.getRad(307.5), 6.0);
 		this._their_using.prepare(this.content);
+	}
+	
+	private function prepare_their_aegis():Void
+	{
+		this._their_aegis_red = new AegisGauge(118.0, Deg.getRad(37.5), Deg.getRad(-37.5), 4.0, 3);
+		this._their_aegis_red.onRouse.Connect(this.their_vital_onRouse, this);
+		this._their_aegis_red.onSleep.Connect(this.their_vital_onSleep, this);
+		this._their_aegis_red.prepare(this.content);
+
+		this._their_aegis_blue = new AegisGauge(118.0+4.0, Deg.getRad(37.5), Deg.getRad(-37.5), 4.0, 2);
+		this._their_aegis_blue.onRouse.Connect(this.their_vital_onRouse, this);
+		this._their_aegis_blue.onSleep.Connect(this.their_vital_onSleep, this);
+		this._their_aegis_blue.prepare(this.content);
+
+		this._their_aegis_pink = new AegisGauge(118.0+8.0, Deg.getRad(37.5), Deg.getRad(-37.5), 4.0, 1);
+		this._their_aegis_pink.onRouse.Connect(this.their_vital_onRouse, this);
+		this._their_aegis_pink.onSleep.Connect(this.their_vital_onSleep, this);
+		this._their_aegis_pink.prepare(this.content);
 	}
 
 	private function prepare_nametag():Void
@@ -241,6 +302,17 @@ class descendent.hud.reticle.Hud extends Shape
 		this._rangefinder = new Rangefinder();
 		this._rangefinder.setTranslation(new Point(-24.0, 0.0));
 		this._rangefinder.prepare(this.content);
+	}
+	
+	private function prepare_test_display():Void
+	{
+		this._test_display = new TestDisplayTruc();
+		this._test_display.setTranslation(new Point(264.0, 0.0));
+		this._test_display.prepare(this.content);
+		
+		this._test_display2 = new TestDisplayTruc();
+		this._test_display2.setTranslation(new Point(-224.0, 0.0));
+		this._test_display2.prepare(this.content);
 	}
 
 	private function prepare_subject(subject:Character):Void
@@ -269,6 +341,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this.discard_subject();
 
+		this.discard_test_display();
 		this.discard_rangefinder();
 		this.discard_callout();
 		this.discard_nametag();
@@ -329,6 +402,7 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.discard_our_vital();
 		this.discard_our_using();
+		this.discard_our_aegis();
 	}
 
 	private function discard_our_vital():Void
@@ -343,6 +417,24 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._our_using.discard();
 		this._our_using = null;
+	}
+	
+	private function discard_our_aegis():Void
+	{
+		this._our_aegis_red.discard();
+		this._our_aegis_red.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._our_aegis_red.onSleep.Disconnect(this.gauge_onSleep, this);
+		this._our_aegis_red = null;
+		
+		this._our_aegis_blue.discard();
+		this._our_aegis_blue.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._our_aegis_blue.onSleep.Disconnect(this.gauge_onSleep, this);
+		this._our_aegis_blue = null;
+
+		this._our_aegis_pink.discard();
+		this._our_aegis_pink.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._our_aegis_pink.onSleep.Disconnect(this.gauge_onSleep, this);
+		this._our_aegis_pink = null;
 	}
 
 	private function discard_dodge():Void
@@ -372,6 +464,24 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_using.discard();
 		this._their_using = null;
 	}
+	
+	private function discard_their_aegis():Void
+	{
+		this._their_aegis_red.discard();
+		this._their_aegis_red.onRouse.Disconnect(this.their_vital_onRouse, this);
+		this._their_aegis_red.onSleep.Disconnect(this.their_vital_onSleep, this);
+		this._their_aegis_red = null;
+		
+		this._their_aegis_blue.discard();
+		this._their_aegis_blue.onRouse.Disconnect(this.their_vital_onRouse, this);
+		this._their_aegis_blue.onSleep.Disconnect(this.their_vital_onSleep, this);
+		this._their_aegis_blue = null;
+
+		this._their_aegis_pink.discard();
+		this._their_aegis_pink.onRouse.Disconnect(this.their_vital_onRouse, this);
+		this._their_aegis_pink.onSleep.Disconnect(this.their_vital_onSleep, this);
+		this._their_aegis_pink = null;
+	}
 
 	private function discard_nametag():Void
 	{
@@ -389,6 +499,14 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._rangefinder.discard();
 		this._rangefinder = null;
+	}
+	
+	private function discard_test_display():Void
+	{
+		this._test_display2.discard();
+		this._test_display2 = null;
+		this._test_display.discard();
+		this._test_display = null;
 	}
 
 	private function discard_subject():Void
@@ -439,8 +557,15 @@ class descendent.hud.reticle.Hud extends Shape
 		this.setGaugeAlpha(100);
 
 		this._our_using.setAlpha(100);
+		this._our_aegis_red.setAlpha(100);		
+		this._our_aegis_blue.setAlpha(100);
+		this._our_aegis_pink.setAlpha(100);
+
 		this._their_vital.setAlpha(100);
 		this._their_using.setAlpha(100);
+		this._their_aegis_red.setAlpha(100);
+		this._their_aegis_blue.setAlpha(100);
+		this._their_aegis_pink.setAlpha(100);
 		this._callout.setAlpha(100);
 	}
 
@@ -456,8 +581,15 @@ class descendent.hud.reticle.Hud extends Shape
 		this.setGaugeAlpha(50);
 
 		this._our_using.setAlpha(50);
+		this._our_aegis_red.setAlpha(50);
+		this._our_aegis_blue.setAlpha(50);
+		this._our_aegis_pink.setAlpha(50);
+
 		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
+		this._their_aegis_red.setAlpha(50);
+		this._their_aegis_blue.setAlpha(50);
+		this._their_aegis_pink.setAlpha(50);
 		this._callout.setAlpha(50);
 	}
 
@@ -491,8 +623,15 @@ class descendent.hud.reticle.Hud extends Shape
 		});
 
 		this._our_using.setAlpha(50);
+		this._our_aegis_red.setAlpha(50);
+		this._our_aegis_blue.setAlpha(50);
+		this._our_aegis_pink.setAlpha(50);
+
 		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
+		this._their_aegis_red.setAlpha(50);
+		this._their_aegis_blue.setAlpha(50);
+		this._their_aegis_pink.setAlpha(50);
 		this._callout.setAlpha(50);
 	}
 
@@ -508,6 +647,10 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.setAlpha(value);
 		this._special_2.setAlpha(value);
 		this._our_vital.setAlpha(value);
+		this._our_aegis_red.setAlpha(value);
+		this._our_aegis_blue.setAlpha(value);
+		this._our_aegis_pink.setAlpha(value);
+
 		this._dodge.setAlpha(value);
 	}
 
@@ -518,6 +661,10 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.present();
 		this._special_2.present();
 		this._our_vital.present();
+		this._our_aegis_red.present();
+		this._our_aegis_blue.present();
+		this._our_aegis_pink.present();
+
 		this._dodge.present();
 	}
 
@@ -528,19 +675,39 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.dismiss();
 		this._special_2.dismiss();
 		this._our_vital.dismiss();
+		this._our_aegis_red.dismiss();
+		this._our_aegis_blue.dismiss();
+		this._our_aegis_pink.dismiss();
+
 		this._dodge.dismiss();
 	}
 
 	private function refresh_their_vital_awake():Void
 	{
-		if (this._character.IsInCombat())
+		if (this._character.IsInCombat()){
 			this._their_vital.present();
-		else if (this._character.IsThreatened())
+			this._their_aegis_red.present();
+			this._their_aegis_blue.present();
+			this._their_aegis_pink.present();
+		}
+		else if (this._character.IsThreatened()){
 			this._their_vital.present();
-		else if (this._their_vital_awakeness != 0)
+			this._their_aegis_red.present();
+			this._their_aegis_blue.present();
+			this._their_aegis_pink.present();
+		}
+		else if (this._their_vital_awakeness != 0){
 			this._their_vital.present();
-		else
+			this._their_aegis_red.present();
+			this._their_aegis_blue.present();
+			this._their_aegis_pink.present();
+		}
+		else{
 			this._their_vital.dismiss();
+			this._their_aegis_red.dismiss();
+			this._their_aegis_blue.dismiss();
+			this._their_aegis_pink.dismiss();
+		}
 	}
 
 	private function refresh_reticle():Void
@@ -581,6 +748,16 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._nametag.setAlpha(100);
 		this._rangefinder.setAlpha(100);
+		this._test_display.setAlpha(100);
+		this._test_display2.setAlpha(100);
+		
+		this._their_vital.setAlpha(100);
+		this._their_aegis_red.setAlpha(100);
+		this._their_aegis_blue.setAlpha(100);
+		this._their_aegis_pink.setAlpha(100);
+		
+		this._power_1.set_active_distant();
+		this._power_2.set_active_distant();
 
 		return subject;
 	}
@@ -603,6 +780,16 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._nametag.setAlpha(50);
 		this._rangefinder.setAlpha(50);
+		this._test_display.setAlpha(50);
+		this._test_display2.setAlpha(50);
+		
+		this._their_vital.setAlpha(50);
+		this._their_aegis_red.setAlpha(50);
+		this._their_aegis_blue.setAlpha(50);
+		this._their_aegis_pink.setAlpha(50);
+		
+		this._power_1.set_unactive_distant();
+		this._power_2.set_unactive_distant();
 
 		return subject;
 	}
@@ -631,11 +818,18 @@ class descendent.hud.reticle.Hud extends Shape
 		this.discard_subject();
 		this.prepare_subject(value);
 
+		this._power_1.setSubject(value);
+		this._power_2.setSubject(value);
 		this._their_vital.setSubject(value);
 		this._their_using.setSubject(value);
+		this._their_aegis_red.setSubject(value);
+		this._their_aegis_blue.setSubject(value);
+		this._their_aegis_pink.setSubject(value);
 		this._nametag.setSubject(value);
 		this._callout.setSubject(value);
 		this._rangefinder.setSubject(value);
+		this._test_display.setSubject(value);
+		this._test_display2.setSubject(this._character);
 	}
 
 	private function character_onEnter():Void

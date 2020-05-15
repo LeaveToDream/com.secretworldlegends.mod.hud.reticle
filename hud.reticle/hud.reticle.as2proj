@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="obj\App.swf" />
-    <movie path="bin\App.swf" />
+    <movie path="E:\Jeux\The Secret World\Data\Gui\Customized\Flash\SimpleHud\App.swf" />
     <movie fps="30" />
     <movie width="1920" />
     <movie height="1080" />
@@ -16,6 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\submodules\thesecretworld\src" />
     <class path="..\submodules\tweener-as2\tweener\src" />
     <class path="..\submodules\secretworldlegends-as2\secretworldlegends\src" />
     <class path="..\submodules\secretworldlegends-as2\flash\src" />

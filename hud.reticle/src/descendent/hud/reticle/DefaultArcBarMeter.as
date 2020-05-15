@@ -39,6 +39,8 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 	private var _value_notch:/*Number*/Array;
 
 	private var _pulse:Boolean;
+	
+	private var _thickness:Number;
 
 	public function DefaultArcBarMeter(r:Number, angle_a:Number, angle_b:Number, thickness:Number,
 		color_shaft:Color, color_meter:Color, color_notch:Color,
@@ -57,6 +59,8 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 		this._value_meter = 0.0;
 		this._value_notch = null;
+		
+		this._thickness = 4.0;
 	}
 
 	public function getMaximum():Number
@@ -199,7 +203,7 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 		m.lineStyle();
 		m.beginFill(0x000000, 100);
-		this._shape.traceNotch(m, new Point(0.0, 0.0), 4.0, 1.0);
+		this._shape.traceNotch(m, new Point(0.0, 0.0), this._thickness, 1.0);
 		m.endFill();
 
 		o.setMask(m);
@@ -236,7 +240,7 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 			if (this._value_notch[i] >= this._maximum)
 				continue;
 
-			this._shape.traceNotch(o, new Point(0.0, 0.0), 4.0, this._value_notch[i] / this._maximum);
+			this._shape.traceNotch(o, new Point(0.0, 0.0), this._thickness, this._value_notch[i] / this._maximum);
 		}
 		o.endFill();
 	}
@@ -263,7 +267,7 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 			if (this._value_notch[i] >= this._maximum)
 				continue;
 
-			this._shape.traceNotch(o, new Point(0.0, 0.0), 4.0, this._value_notch[i] / this._maximum);
+			this._shape.traceNotch(o, new Point(0.0, 0.0), this._thickness, this._value_notch[i] / this._maximum);
 		}
 		o.endFill();
 	}

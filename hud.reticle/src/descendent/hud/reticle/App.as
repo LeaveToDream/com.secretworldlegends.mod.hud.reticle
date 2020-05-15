@@ -12,7 +12,7 @@ import descendent.hud.reticle.TweenerSetup;
 
 class descendent.hud.reticle.App
 {
-	private static var OPT_NAMESPACE:String = "descendent_hud_reticle_";
+	private static var OPT_NAMESPACE:String = "simple_hud_";
 
 	private static var SCALE_H:Number = 1080.0;
 
